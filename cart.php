@@ -5,16 +5,13 @@ $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 
 $total = 0;
 
-// If the payment form is submitted successfully
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
-    // Clear the cart
+    
     unset($_SESSION['cart']);
-    // Redirect to cart page with a thank you message
     header("Location: cart.php?thank_you=true");
     exit;
 }
 
-// Handle quantity updates
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_cart'])) {
     foreach ($_POST['quantity'] as $product_id => $quantity) {
         $_SESSION['cart'][$product_id]['quantity'] = $quantity;
@@ -23,7 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_cart'])) {
     exit;
 }
 
-// Handle item deletion
 if (isset($_GET['delete_product'])) {
     $product_id = $_GET['delete_product'];
     unset($_SESSION['cart'][$product_id]);
@@ -36,7 +32,6 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Fetch customer details from the database
 $username = $_SESSION['username'];
 $sql = "SELECT * FROM customers WHERE username='$username'";
 $result = mysqli_query($conn, $sql);
@@ -44,10 +39,8 @@ $result = mysqli_query($conn, $sql);
 if (mysqli_num_rows($result) == 1) {
     $customer = mysqli_fetch_assoc($result);
 } else {
-    // Handle error if customer not found
 }
 
-// Use customer details in the form
 $name = isset($customer['name']) ? $customer['name'] : '';
 $address = isset($customer['address']) ? $customer['address'] : '';
 $email = isset($customer['email']) ? $customer['email'] : '';
@@ -195,12 +188,10 @@ if (isset($_GET['thank_you']) && $_GET['thank_you'] === 'true') {
     echo '<script>alert("Thank you for your order!");</script>';
 }
 
-// Check if customer has saved card details
 $sql = "SELECT * FROM payments WHERE customer_id = (SELECT id FROM customers WHERE username='$username')";
 $result = mysqli_query($conn, $sql);
 $payment_details = mysqli_fetch_assoc($result);
 
-// Pre-fill form fields with saved card details, if any
 $cardNumber = isset($payment_details['card_number']) ? $payment_details['card_number'] : '';
 $expirationDate = isset($payment_details['expiration_date']) ? $payment_details['expiration_date'] : '';
 $cvv = isset($payment_details['cvv']) ? $payment_details['cvv'] : '';
@@ -209,13 +200,10 @@ if (isset($_POST['saveCard'])) {
     $expirationDate = $_POST['expirationDate'];
     $cvv = $_POST['cvv'];
 
-    // Check if customer has saved card details
     if ($payment_details) {
-        // Update existing card details if modified
         $updateCardQuery = "UPDATE payments SET card_number = '$cardNumber', expiration_date = '$expirationDate', cvv = '$cvv' WHERE customer_id = '$customerId'";
         mysqli_query($conn, $updateCardQuery);
     } else {
-        // Insert new card details if not saved before
         $insertCardQuery = "INSERT INTO payments (customer_id, card_number, expiration_date, cvv) VALUES ('$customerId', '$cardNumber', '$expirationDate', '$cvv')";
         mysqli_query($conn, $insertCardQuery);
     }
