@@ -1,0 +1,1 @@
+Demonstrációs célú alkalmazások
