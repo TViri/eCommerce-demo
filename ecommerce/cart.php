@@ -78,51 +78,6 @@ $address = isset($customer['address']) ? $customer['address'] : '';
 $email = isset($customer['email']) ? $customer['email'] : '';
 $customerId = isset($customer['id']) ? $customer['id'] : '';
 
-/*save payment data
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
-    // Process form submission
-
-    // Connect to the database
-    $conn = mysqli_connect("localhost", "root", "", "ecommerce");
-    if (!$conn) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
-
-    // Fetch customer details
-    $username = $_SESSION['username'];
-    $sql = "SELECT * FROM customers WHERE username='$username'";
-    $result = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($result) == 1) {
-        $customer = mysqli_fetch_assoc($result);
-        $customerId = $customer['id'];
-
-        // Fetch or initialize payment details
-        $sql = "SELECT * FROM payments WHERE customer_id = '$customerId'";
-        $result = mysqli_query($conn, $sql);
-        $payment_details = mysqli_fetch_assoc($result);
-
-        // Get form data
-        $cardNumber = $_POST['cardNumber'];
-        $expirationDate = $_POST['expirationDate'];
-        $cvv = $_POST['cvv'];
-        $saveCard = isset($_POST['saveCard']) ? 1 : 0;
-
-        // Save or update payment details based on the saveCard checkbox
-        if ($saveCard) {
-            if ($payment_details) {
-                $updateCardQuery = "UPDATE payments SET card_number = '$cardNumber', expiration_date = '$expirationDate', cvv = '$cvv' WHERE customer_id = '$customerId'";
-                mysqli_query($conn, $updateCardQuery);
-            } else {
-                $insertCardQuery = "INSERT INTO payments (customer_id, card_number, expiration_date, cvv) VALUES ('$customerId', '$cardNumber', '$expirationDate', '$cvv')";
-                mysqli_query($conn, $insertCardQuery);
-            }
-        }
-
-        // Close database connection
-        mysqli_close($conn);
-    }
-}
-*/
 ?>
 
 <!DOCTYPE html>
